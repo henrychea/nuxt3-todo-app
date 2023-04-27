@@ -1,2 +1,270 @@
-@import './spacing.scss';
-@import './fontSize.scss';
+@import "./spacing.scss";
+@import "./fontSize.scss";
+@import "./colors.scss";
+@import "./radius.scss";
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap");
+
+html {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  height: 100vh;
+  flex: 1;
+  background-color: aliceblue;
+}
+body {
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  background-color: aliceblue;
+  color: #000;
+  height: 100%;
+  justify-items: center;
+  justify-content: center;
+}
+footer {
+  bottom: 0;
+  width: 100%;
+  height: 8vh;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+h5 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+/* For desktop */
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.row-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.col {
+  flex: 1;
+  flex-direction: column;
+}
+
+.col-reverse {
+  flex: 1;
+  flex-direction: column-reverse;
+}
+
+.md-auto {
+  flex: 1 auto 0;
+  width: 0;
+}
+
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    flex: 1;
+    max-width: calc(100% / 12) * $i;
+  }
+}
+
+/* For tablet */
+@media only screen and (max-width: 768px) {
+  .row {
+    display: flex;
+    flex-direction: row;
+    // flex-wrap: wrap;
+  }
+
+  .col {
+    flex: 1;
+    flex-direction: column;
+  }
+}
+
+/* For mobile */
+@media only screen and (max-width: 480px) {
+  .row {
+    display: flex;
+    flex-direction: row;
+    // flex-wrap: wrap;
+  }
+  .col {
+    flex: 1;
+    flex-direction: column;
+  }
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+align-items-start {
+  align-items: flex-start;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-start {
+  justify-content: flex-start;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-space-between {
+  justify-content: space-between;
+}
+
+.justify-content-space-around {
+  justify-content: space-around;
+}
+
+.justify-content-space-evenly {
+  justify-content: space-evenly;
+}
+
+.align-self-start {
+  align-self: flex-start;
+}
+
+.align-self-end {
+  align-self: flex-end;
+}
+
+.align-self-center {
+  align-self: center;
+}
+
+.align-self-stretch {
+  align-self: stretch;
+}
+
+.align-self-baseline {
+  align-self: baseline;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-md {
+  font-size: 1rem;
+}
+
+.text-lg {
+  font-size: 1.25rem;
+}
+
+.text-xl {
+  font-size: 1.5rem;
+}
+
+.text-bold {
+  font-weight: 700;
+}
+
+.text-regular {
+  font-weight: 400;
+}
+
+.text-gray {
+  color: gray;
+}
+// Elements
+.btn-primary {
+  @extend .text-sm;
+  color: $primary-500;
+  &:hover {
+    color: $primary-600;
+    cursor: pointer;
+  }
+}
+
+.btn-danger {
+  @extend .text-sm;
+  color: $danger-500;
+  &:hover {
+    color: $danger-600;
+    cursor: pointer;
+  }
+}
+
+.btn {
+  @extend .text-sm;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul li:not(:last-child) {
+  @extend .mb-2;
+}
+
+.border-thin {
+  border: 1px solid rgba(78, 78, 78, 0.611);
+}
+
+.sm-shadow {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.completed-task {
+  text-decoration: line-through;
+  color: gray;
+}
+
+
+

@@ -3,13 +3,19 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "yarn nuxt-dev & yarn json-server",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "nuxt-dev": "nuxt dev",
+    "json-server": "json-server --watch db.json --port 3004"
   },
   "devDependencies": {
+    "@nuxt/eslint-config": "^0.1.1",
     "@types/node": "^18",
+    "eslint": "^8.39.0",
+    "json-server": "^0.17.3",
     "nuxt": "^3.4.2",
     "sass": "^1.62.1",
     "vitest": "^0.30.1"

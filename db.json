@@ -1,3 +1,64 @@
 {
-  "todos": [{ "id": 1, "text": "Make Todo App", "isComplete": false }]
+  "todos": [
+    {
+      "id": 1,
+      "text": "Make Todo App",
+      "isComplete": false
+    },
+    {
+      "id": 2,
+      "text": "TTTT",
+      "isComplete": false
+    },
+    {
+      "id": 3,
+      "text": "14324",
+      "isComplete": false
+    },
+    {
+      "id": 4,
+      "text": "213123",
+      "isComplete": false
+    },
+    {
+      "id": 5,
+      "text": "fdasdfas",
+      "isComplete": false
+    },
+    {
+      "id": 6,
+      "text": "ffff",
+      "isComplete": false
+    },
+    {
+      "id": 7,
+      "text": "fff",
+      "isComplete": false
+    },
+    {
+      "id": 8,
+      "text": "12321",
+      "isComplete": false
+    },
+    {
+      "id": 9,
+      "text": "fasdf",
+      "isComplete": false
+    },
+    {
+      "id": 10,
+      "text": "dfdf",
+      "isComplete": false
+    },
+    {
+      "id": 11,
+      "text": "sdfsd",
+      "isComplete": true
+    },
+    {
+      "id": 12,
+      "text": "sdfsd",
+      "isComplete": false
+    }
+  ]
 }
