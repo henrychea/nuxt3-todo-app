@@ -5,8 +5,9 @@
       <span
         id="title"
         class="text-sm text-bold"
-      >My List of Tasks ({{ totalTodos }})</span>
+      >My List of Tasks {{ totalTodos && `(${totalTodos})` }}</span>
       <div
+        v-if="!noServer"
         class="row align-items-center align-self-center justify-content-space-between mt-2"
         style="height: 2vh;"
       >
@@ -57,8 +58,17 @@
           </Transition>
         </div>
       </div>
-      <AddTask class="py-3" />
-      <TaskList :loading="loading" />
+      <AddTask 
+        v-if="!noServer"
+        class="py-3"
+      />
+      <TaskList
+        v-if="!noServer"
+        :loading="loading"
+      />
+      <div v-if="noServer">
+        Failed to connect to server
+      </div>
       <Transition name="fade">
         <div class="row">
           <template v-if="prevLinkPage && prevLinkPage !== currentPage">
@@ -95,6 +105,7 @@ const currentPage = ref(null as number | null)
 const totalTodos = ref(null as number | null)
 const numberOfSelectedTodos = ref(0)
 const todoStore = useTodo()
+const noServer = ref(false)
 
 const loading = ref(false)
 todoStore.$subscribe((mutation, state) => {
@@ -140,7 +151,12 @@ async function goToPrevPage() {
 
 onBeforeMount(async () => {
   loading.value = true
-  await todoStore.fetchTodos();
+  try {
+    await todoStore.fetchTodos();
+  } catch (error) {
+    noServer.value = true
+    console.error(error)
+  }
   loading.value = false
 });
 
