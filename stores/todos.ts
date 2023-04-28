@@ -1,4 +1,5 @@
 import { iTodo } from "~/types";
+import { defineStore } from "pinia";
 
 function makePageLinks(links: string[]){
   const nextLink = links[1].split(';')[0].replace('<', '').replace('>', '');
@@ -14,7 +15,7 @@ function makePageLinks(links: string[]){
 export const useTodo = defineStore("todo", {
   state: () => ({
     todos: [] as iTodo[],
-    selectdTodos: [] as iTodo[],
+    selectedTodos: [] as iTodo[],
     nextPage: 0,
     prevPage: 0,
     lastPage: 0,
@@ -57,13 +58,18 @@ export const useTodo = defineStore("todo", {
     },
 
     selectTodo(todo: iTodo) {
-      this.selectdTodos.push(todo);
+      this.selectedTodos.push(todo);
+    },
+
+    unselectTodo(todo: iTodo) {
+      if (this.selectedTodos.length === 0) return;
+      this.selectedTodos = this.selectedTodos.filter((t) => t.id !== todo.id);
     },
 
     async completeSelectedTodos() {
-      if (this.selectdTodos.length === 0) return;
+      if (this.selectedTodos.length === 0) return;
       await Promise.all(
-        this.selectdTodos.map(async (todo) => {
+        this.selectedTodos.map(async (todo) => {
           const res = await fetch(`http://localhost:3004/todos/${todo.id}`, {
             method: "PATCH",
             headers: {
@@ -73,21 +79,23 @@ export const useTodo = defineStore("todo", {
               isComplete: true,
             }),
           });
-          console.info("Complete all todos", res);
+          console.info("Complete selected todos", res);
         })
       );
+      this.selectedTodos = [];
     },
 
     async removeSelectedTodos() {
-      if (this.selectdTodos.length === 0) return;
+      if (this.selectedTodos.length === 0) return;
       await Promise.all(
-        this.selectdTodos.map(async (todo) => {
+        this.selectedTodos.map(async (todo) => {
           const res = await fetch(`http://localhost:3004/todos/${todo.id}`, {
             method: "DELETE",
           });
-          console.info("Remove all todos", res);
+          console.info("Remove selected todos", res);
         })
       );
+      this.selectedTodos = [];
     },
 
     async addTodo(text: string) {

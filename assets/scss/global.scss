@@ -218,6 +218,10 @@ align-items-start {
 .text-gray {
   color: gray;
 }
+
+.text-fade {
+  transition: color 0.2s ease-in-out;
+}
 // Elements
 .btn-primary {
   @extend .text-sm;

@@ -10,6 +10,7 @@
       <div class="row pt-1 align-items-center">
         <div class="col pr-3">
           <input
+            id="taskText"
             v-model="taskText"
             class="radius-3 border-thin bg-gray-100"
             style="width: 100%; height: 1.2em;"
@@ -18,6 +19,7 @@
         </div>
         <div class="col-4 align-content-end">
           <div
+            data-target="AddTask"
             class="btn-primary align-self-end text-right pr-2"
             @click="addTodo"
           >

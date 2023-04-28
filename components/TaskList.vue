@@ -1,15 +1,20 @@
 <template>
   <div style="min-height: 60vh;">
     <Transition name="fade">
-      <template v-if="tasks === null || tasks.length === 0">
+      <template v-if="!loading && tasks === null">
         <div class="text-center">
           <span class="text-sm">No Tasks Found</span>
         </div>
       </template>
-      <template v-else>
-        <ul>
+      <template v-else-if="!loading && tasks !== null">
+        <TransitionGroup
+          id="taskList"
+          name="fade"
+          tag="ul"
+        >
           <li
             v-for="todo in tasks"
+            :id="`task-${todo.id}`"
             :key="todo.id"
             class="px-1 py-2 border-thin bg-white-300 radius-3"
           >
@@ -18,8 +23,7 @@
                 <input
                   :id="todo.id.toString()"
                   type="checkbox"
-                  :checked="todo.isComplete"
-                  @change="selectedTasks.push(todo)"
+                  @change="handleSelectToggle($event, todo)"
                 >
               </div>
               <div class="col md-auto">
@@ -29,10 +33,14 @@
                 >{{ todo.text }}</label>
               </div>
               <div>
-                <div class="row justify-content-end">
+                <div
+                  :id="`task${todo.id}-actions`"
+                  class="row justify-content-end"
+                >
                   <Transition name="fade">
                     <div
-                      class="col pl-4 btn text-gray"
+                      :data-type="`CompleteTask${todo.id}`"
+                      :class="`col pl-4 btn ${todo.isComplete ? 'text-gray text:hover-gray-900' : 'text-success-500 text:hover-success-600'}`"
                       @click="ToggleTodo(todo)"
                     >
                       {{ todo.isComplete ? 'Undo' : 'Complete' }}
@@ -41,6 +49,7 @@
                   <Transition name="fade">
                     <template v-if="todo.isComplete">
                       <div
+                        :data-type="`DeleteTask${todo.id}`"
                         class="col pl-4 btn-danger text-gray"
                         @click="DeleteTodo(todo)"
                       >
@@ -52,7 +61,12 @@
               </div>
             </div>
           </li>
-        </ul>
+        </TransitionGroup>
+      </template>
+      <template v-else>
+        <div class="text-center">
+          <span class="text-sm">Tasks Loading...</span>
+        </div>
       </template>
     </Transition>
   </div>
@@ -64,14 +78,19 @@ import { useTodo } from '../stores/todos';
 import { ref } from 'vue'
 
 const todoStore = useTodo()
-const tasks = ref([] as iTodo[])
-todoStore.$subscribe((mutation, state) => {
-  tasks.value = todoStore.todos as iTodo[]
-
-  console.log('mutation', mutation, 'state', state)
+const tasks = ref(null as iTodo[] | null)
+defineProps({
+  loading: {
+    type: Boolean,
+    default: false
+  }
 })
 
-const selectedTasks = ref([] as iTodo[])
+
+todoStore.$subscribe((mutation, state) => {
+  tasks.value = todoStore.todos as iTodo[]
+})
+
 
 async function ToggleTodo(todo: iTodo) {
   await todoStore.toggleTodo(todo.id)
@@ -81,6 +100,14 @@ async function ToggleTodo(todo: iTodo) {
 async function DeleteTodo(todo: iTodo) {
   await todoStore.removeTodo(todo.id)
   await todoStore.fetchTodos()
+}
+
+function handleSelectToggle(event: any, todo: iTodo) {
+  if (event.target.checked) {
+    todoStore.selectTodo(todo)
+  } else {
+    todoStore.unselectTodo(todo)
+  }
 }
 
 </script>
@@ -95,5 +122,4 @@ async function DeleteTodo(todo: iTodo) {
 .fade-leave-to {
   opacity: 0;
 }
-
 </style>
