@@ -1,5 +1,6 @@
 import { iTodo } from "~/types";
 import { defineStore } from "pinia";
+import { randomUUID } from "crypto";
 
 function makePageLinks(links: string[]){
   const nextLink = links[1].split(';')[0].replace('<', '').replace('>', '');
@@ -105,7 +106,7 @@ export const useTodo = defineStore("todo", {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: this.todos.length + 1,
+          id: randomUUID,
           text,
           isComplete: false,
         }),
