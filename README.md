@@ -15,4 +15,4 @@ Start the development server on `http://localhost:3000` & `json-server` at `http
 ```bash
 yarn dev
 ```
-Live on [Vercel]('https://nuxt3-todo-app-five.vercel.app/') (json-server is not working since it's client only app)
+Live on [Vercel](https://nuxt3-todo-app-five.vercel.app/) (json-server is not working since it's client only app)
