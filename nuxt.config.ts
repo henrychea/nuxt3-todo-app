@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   modules: [
     // pinia plugin
     '@pinia/nuxt',
+    'nuxt-vitest'
   ],
 
   imports: {
@@ -15,4 +16,10 @@ export default defineNuxtConfig({
   pinia: {
     autoImports: ['defineStore', 'acceptHMRUpdate'],
   }, 
+  vite: {
+    test: {
+      globals: true,
+      environment: "jsdom",
+    },
+  },
 });
