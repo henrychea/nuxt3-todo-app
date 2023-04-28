@@ -1,73 +1,77 @@
 <template>
   <div style="min-height: 60vh;">
     <Transition name="fade">
-      <template v-if="!loading && tasks === null">
-        <div class="text-center">
-          <span class="text-sm">No Tasks Found</span>
-        </div>
-      </template>
-      <template v-else-if="!loading && tasks !== null">
-        <TransitionGroup
-          id="taskList"
-          name="fade"
-          tag="ul"
+      <div
+        v-if="!loading && tasks === null"
+        class="text-center"
+      >
+        <span class="text-sm">No Tasks Found</span>
+      </div>
+    </Transition>
+    <div v-if="!loading && tasks !== null">
+      <TransitionGroup
+        id="taskList"
+        name="fade"
+        tag="ul"
+      >
+        <li
+          v-for="todo in tasks"
+          :id="`task-${todo.id}`"
+          :key="todo.id"
+          class="px-1 py-2 border-thin bg-white-300 radius-3"
         >
-          <li
-            v-for="todo in tasks"
-            :id="`task-${todo.id}`"
-            :key="todo.id"
-            class="px-1 py-2 border-thin bg-white-300 radius-3"
-          >
-            <div class="row align-items-center">
-              <div class="md-auto pr-4">
-                <input
-                  :id="todo.id.toString()"
-                  type="checkbox"
-                  @change="handleSelectToggle($event, todo)"
-                >
-              </div>
-              <div class="col md-auto">
-                <label
-                  :class="todo.isComplete && 'completed-task'"
-                  :for="todo.id.toString()"
-                >{{ todo.text }}</label>
-              </div>
-              <div>
-                <div
-                  :id="`task${todo.id}-actions`"
-                  class="row justify-content-end"
-                >
-                  <Transition name="fade">
+          <div class="row align-items-center">
+            <div class="md-auto pr-4">
+              <input
+                :id="todo.id.toString()"
+                type="checkbox"
+                @change="handleSelectToggle($event, todo)"
+              >
+            </div>
+            <div class="col md-auto">
+              <label
+                :class="todo.isComplete && 'completed-task'"
+                :for="todo.id.toString()"
+              >{{ todo.text }}</label>
+            </div>
+            <div>
+              <div
+                :id="`task${todo.id}-actions`"
+                class="row justify-content-end"
+              >
+                <Transition name="fade">
+                  <div
+                    :data-type="`CompleteTask${todo.id}`"
+                    :class="`col pl-4 btn ${todo.isComplete ? 'text-gray text:hover-gray-900' : 'text-success-500 text:hover-success-600'}`"
+                    @click="ToggleTodo(todo)"
+                  >
+                    {{ todo.isComplete ? 'Undo' : 'Complete' }}
+                  </div>
+                </Transition>
+                <Transition name="fade">
+                  <template v-if="todo.isComplete">
                     <div
-                      :data-type="`CompleteTask${todo.id}`"
-                      :class="`col pl-4 btn ${todo.isComplete ? 'text-gray text:hover-gray-900' : 'text-success-500 text:hover-success-600'}`"
-                      @click="ToggleTodo(todo)"
+                      :data-type="`DeleteTask${todo.id}`"
+                      class="col pl-4 btn-danger text-gray"
+                      @click="DeleteTodo(todo)"
                     >
-                      {{ todo.isComplete ? 'Undo' : 'Complete' }}
+                      Delete
                     </div>
-                  </Transition>
-                  <Transition name="fade">
-                    <template v-if="todo.isComplete">
-                      <div
-                        :data-type="`DeleteTask${todo.id}`"
-                        class="col pl-4 btn-danger text-gray"
-                        @click="DeleteTodo(todo)"
-                      >
-                        Delete
-                      </div>
-                    </template>
-                  </Transition>
-                </div>
+                  </template>
+                </Transition>
               </div>
             </div>
-          </li>
-        </TransitionGroup>
-      </template>
-      <template v-else>
-        <div class="text-center">
-          <span class="text-sm">Tasks Loading...</span>
-        </div>
-      </template>
+          </div>
+        </li>
+      </TransitionGroup>
+    </div>
+    <Transition name="fade">
+      <div
+        v-if="loading"
+        class="text-center"
+      >
+        <span class="text-sm">Tasks Loading...</span>
+      </div>
     </Transition>
   </div>
 </template>
@@ -82,7 +86,7 @@ const tasks = ref(null as iTodo[] | null)
 defineProps({
   loading: {
     type: Boolean,
-    default: false
+    required: true
   }
 })
 

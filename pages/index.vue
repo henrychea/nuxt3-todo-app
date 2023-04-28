@@ -58,9 +58,7 @@
         </div>
       </div>
       <AddTask class="py-3" />
-      <Transition name="fade">
-        <TaskList :loading="loading" />
-      </Transition>
+      <TaskList :loading="loading" />
       <Transition name="fade">
         <div class="row">
           <template v-if="prevLinkPage && prevLinkPage !== currentPage">

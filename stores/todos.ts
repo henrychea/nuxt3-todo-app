@@ -106,7 +106,7 @@ export const useTodo = defineStore("todo", {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          id: randomUUID,
+          id: Math.floor(Math.random()),
           text,
           isComplete: false,
         }),
