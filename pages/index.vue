@@ -7,7 +7,6 @@
         class="text-sm text-bold"
       >My List of Tasks {{ totalTodos && `(${totalTodos})` }}</span>
       <div
-        v-if="!noServer"
         class="row align-items-center align-self-center justify-content-space-between mt-2"
         style="height: 2vh;"
       >
@@ -59,11 +58,9 @@
         </div>
       </div>
       <AddTask 
-        v-if="!noServer"
         class="py-3"
       />
       <TaskList
-        v-if="!noServer"
         :loading="loading"
       />
       <div v-if="noServer">
