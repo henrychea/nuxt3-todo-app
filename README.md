@@ -10,7 +10,7 @@ yarn install
 
 ## Development Server
 
-Start the development server on `http://localhost:3000`
+Start the development server on `http://localhost:3000` & `json-server` at `http://localhost:3004`
 
 ```bash
 yarn dev
