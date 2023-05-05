@@ -1,15 +1,14 @@
-import { iTodo } from "~/types";
+import { iBaseTodo, iTodo } from "~/types";
 import { defineStore } from "pinia";
-import { randomUUID } from "crypto";
 
-function makePageLinks(links: string[]){
-  const nextLink = links[1].split(';')[0].replace('<', '').replace('>', '');
-  const prevLink = links[0].split(';')[0].replace('<', '').replace('>', '');
-  const lastLink = links[2].split(';')[0].replace('<', '').replace('>', '');
+function makePageLinks(links: string[]) {
+  const nextLink = links[1].split(";")[0].replace("<", "").replace(">", "");
+  const prevLink = links[0].split(";")[0].replace("<", "").replace(">", "");
+  const lastLink = links[2].split(";")[0].replace("<", "").replace(">", "");
 
-  const nextLinkPage = nextLink.split('&')[0].split('=')[1];
-  const prevLinkPage = prevLink.split('&')[0].split('=')[1];
-  const lastLinkPage = lastLink.split('&')[0].split('=')[1];
+  const nextLinkPage = nextLink.split("&")[0].split("=")[1];
+  const prevLinkPage = prevLink.split("&")[0].split("=")[1];
+  const lastLinkPage = lastLink.split("&")[0].split("=")[1];
   return { nextLinkPage, prevLinkPage, lastLinkPage };
 }
 
@@ -20,8 +19,8 @@ export const useTodo = defineStore("todo", {
     nextPage: 0,
     prevPage: 0,
     lastPage: 0,
-    page : 1,
-    total : 0,
+    page: 1,
+    total: 0,
   }),
 
   getters: {
@@ -40,7 +39,7 @@ export const useTodo = defineStore("todo", {
   },
 
   actions: {
-    async fetchTodos(setPage: number = 1,limit: number = 10) {
+    async fetchTodos(setPage: number = 1, limit: number = 10) {
       const res = await fetch(
         `http://localhost:3004/todos?_page=${setPage}&_limit=${limit}`
       );
@@ -48,10 +47,22 @@ export const useTodo = defineStore("todo", {
       const link = res.headers.get("link");
       const total = res.headers.get("x-total-count");
       this.total = Number(total);
-      this.todos = await res.json();
+      const todoRes = await res.json();
+      const dueDateTodos = todoRes.map((todo: any) => {
+        return {
+          id: todo.id,
+          title: todo.title,
+          completed: todo.completed,
+          priority: todo.priority,
+          description: todo.description,
+          dueDate: todo.due_date,
+        };
+      });
+      this.todos = dueDateTodos as iTodo[];
       if (link) {
         const links = link.split(",");
-        const { nextLinkPage, prevLinkPage, lastLinkPage } = makePageLinks(links);
+        const { nextLinkPage, prevLinkPage, lastLinkPage } =
+          makePageLinks(links);
         this.nextPage = parseInt(nextLinkPage);
         this.prevPage = parseInt(prevLinkPage);
         this.lastPage = parseInt(lastLinkPage);
@@ -77,7 +88,7 @@ export const useTodo = defineStore("todo", {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              isComplete: true,
+              completed: true,
             }),
           });
           console.info("Complete selected todos", res);
@@ -99,7 +110,7 @@ export const useTodo = defineStore("todo", {
       this.selectedTodos = [];
     },
 
-    async addTodo(text: string) {
+    async addTodo(newTodo: iBaseTodo) {
       await fetch("http://localhost:3004/todos", {
         method: "POST",
         headers: {
@@ -107,8 +118,11 @@ export const useTodo = defineStore("todo", {
         },
         body: JSON.stringify({
           id: Math.floor(Math.random()),
-          text,
-          isComplete: false,
+          title: newTodo.title,
+          completed: false,
+          priority: newTodo.priority,
+          description: newTodo.description,
+          due_date: newTodo.dueDate,
         }),
       });
     },
@@ -132,7 +146,7 @@ export const useTodo = defineStore("todo", {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          isComplete: !this.todos.find((todo) => todo.id === id)?.isComplete,
+          completed: !this.todos.find((todo) => todo.id === id)?.completed,
         }),
       });
     },
@@ -153,7 +167,7 @@ export const useTodo = defineStore("todo", {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              isComplete: true,
+              completed: true,
             }),
           });
           console.info("Complete all todos", res);

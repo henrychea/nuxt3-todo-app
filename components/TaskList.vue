@@ -30,11 +30,20 @@
             </div>
             <div class="col md-auto">
               <label
-                :class="todo.isComplete && 'completed-task'"
+                :class="todo.completed && 'completed-task'"
                 :for="todo.id.toString()"
-              >{{ todo.text }}</label>
+              >{{ todo.title }} : {{ todo.description }}</label>
+              <div :class="todo.completed ? `completed-task` : `text-sm text-gray-700`">
+                {{ todo.dueDate ? new Date(todo.dueDate).toDateString() : 'No due date' }}
+              </div>
             </div>
-            <div>
+            
+            <div class="col-4 text-right">
+              <div
+                class="text-sm text-capitalize"
+              >
+                Priority: {{ todo.priority }}
+              </div>
               <div
                 :id="`task${todo.id}-actions`"
                 class="row justify-content-end"
@@ -42,14 +51,14 @@
                 <Transition name="fade">
                   <div
                     :data-type="`CompleteTask${todo.id}`"
-                    :class="`col pl-4 btn ${todo.isComplete ? 'text-gray text:hover-gray-900' : 'text-success-500 text:hover-success-600'}`"
+                    :class="`col pl-4 btn ${todo.completed ? 'text-gray text:hover-gray-900' : 'text-success-500 text:hover-success-600'}`"
                     @click="ToggleTodo(todo)"
                   >
-                    {{ todo.isComplete ? 'Undo' : 'Complete' }}
+                    {{ todo.completed ? 'Undo' : 'Complete' }}
                   </div>
                 </Transition>
                 <Transition name="fade">
-                  <template v-if="todo.isComplete">
+                  <template v-if="todo.completed">
                     <div
                       :data-type="`DeleteTask${todo.id}`"
                       class="col pl-4 btn-danger text-gray"

@@ -14,14 +14,21 @@ describe("Basic Test", async () => {
 
   test("Has dummy task", () => {
     setTimeout(() => {
-        expect(taskListWrapper.html()).toContain("Going to school");
+        expect(taskListWrapper.html()).toContain("Hello Todo");
     }, 1000);
   });
 
   test("Add a new task", async () => {
-    const input = wrapper.find("#taskText");
+    const titleInput = wrapper.find("#taskText");
+    const descInput = wrapper.find("#taskDescription");
+    const prioritySelect = wrapper.find("#taskPriority");
+    const dueDateInput = wrapper.find("#taskDueDate");
     const button = wrapper.find('[data-target="AddTask"]');
-    await input.setValue("New TEST Task");
+    await titleInput.setValue("New TEST Task");
+    await descInput.setValue("New TEST Task Description");
+    await prioritySelect.setValue("high");
+    await dueDateInput.setValue("10/10/2021");
+
     await button.trigger("click");
     setTimeout(() => {
         expect(wrapper.html()).toContain("New TEST Task");

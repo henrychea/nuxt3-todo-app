@@ -1,6 +1,6 @@
 <template>
-  <div style="height: 100vh;">
-    <div class="row justify-content-center">
+  <div class="h-100 bg-blue-950">
+    <div class="flex-row justify-content-center">
       <header class="px-1 pb-1 pt-5 text-left">
         <div>
           <h1>Simple Todo App</h1>
@@ -16,7 +16,7 @@
         </div>
       </header>
     </div>
-    <div class="row justify-content-center">
+    <div class="flex-row justify-content-center">
       <main
         style="min-height: 40vh; max-height: 100vh; overflow: scroll;"
         class="p-1"
@@ -24,8 +24,8 @@
         <slot />
       </main>
     </div>
-    <div class="row">
-      <footer class="text-center text-gray pt-4 text-left">
+    <div class="flex-row">
+      <footer class="text-center text-gray pt-4">
         <div>
           <div>
             Simple Todo App

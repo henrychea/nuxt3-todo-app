@@ -1,6 +1,11 @@
-export interface iTodo {
-    id: number;
-    text: string;
-    isComplete: boolean;
-  }
+export interface iBaseTodo {
+  title: string;
+    completed: boolean;
+    priority: "high" | "medium" | "low";
+    description: string;
+    dueDate: string;
+}
+export interface iTodo extends iBaseTodo {
+  id: number;
+}
   
